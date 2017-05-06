@@ -14,11 +14,12 @@ You just need to press the space to make the pattern right in the black area.
 
 Import `circlefit.js`
 
-Before using this javascript, make sure that you have imported the `collie.js` and get the div with name 'circlefit'.
+Before using this javascript, make sure that you have imported the `collie.js` and get the div with name 'circlefit' and a input named 'score'.
 
 ```html
 <script type="text/javascript" src="http://jindo.dev.naver.com/collie/deploy/collie.min.js"></script>
 <div id="circlefit"></div>
+<div align="center"><input type="text" id="score" readonly="readonly" ></div>
 <script type="text/javascript" src="circlefit.js"></script>
 ```
 
