@@ -24,12 +24,11 @@ Before using this javascript, make sure that you have imported the `collie.js` a
 
 ```html
 <script type="text/javascript" src="http://jindo.dev.naver.com/collie/deploy/collie.min.js"></script>
-<div id="circlefit"></div>
-<div align="center"><input type="text" id="score" readonly="readonly" ></div>
+<script type="text/javascript" src="http://jindo.dev.naver.com/collie/js/raphael-min.js"></script>
+<div id="circlefit" style="width:100%;height:100%;background-color:#40E0D0;">
+<div align="center"><input type="text" id="score" readonly="readonly" ></div></div>
 <script type="text/javascript" src="circlefit.js"></script>
 ```
-
-The game div is 500px width and 500px height.
 
 
 
