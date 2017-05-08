@@ -1,75 +1,110 @@
-window.onload=function(){
-  document.onkeydown = start
-  document.onkeyup = score
-  document.onkeypress = start
-}
 var myscore=0;    //store temp score
 var max_score=0;    //store this time max score
 var time=0;       //time caculate, in order to expand the radius
 var flag = false;
+var tid;
+
 
 const angv=1;       //angular velocity
 const circle_max_size=150;
 const level1=5;
+const gameheight=Math.min(document.getElementById("circlefit").clientWidth,document.getElementById("circlefit").clientHeight);
+const gamewidth=document.getElementById("circlefit").clientWidth
 
-
-
-function start(e){
-  keynum=window.event? e.keyCode:e.which;
-  if(keynum==32)
+/*---------------------- mobile -------------------------*/
+var tch=document.getElementById("circlefit");
+tch.addEventListener('touchstart',function(e){
+  e.preventDefault();
+  document.getElementById("circlefit").focus();
+  if(e.touches.length==1)
   {
-    if(time>=circle_max_size) flag=true;
-    if(time<=0) flag=false;
-    if(!flag)
+    tid=setInterval(function(){
+    start();
+  },1000);
+  }
+});
+tch.addEventListener('touchend',function(e){
+  if(e.touches.length==0)
+  {
+    score();
+    clearInterval(tid);
+  }
+});
+
+/*-------------------- PC --------------------------*/
+tch.addEventListener('mousedown',function(e){
+  document.getElementById("circlefit").focus();
+  if(e.which==1)
+  {
+    tid=setInterval(function(){
+      start();
+    },20)
+  }
+});
+tch.addEventListener('mouseup',function(e){
+  if(e.which==1)
+  {
+    score();
+    clearInterval(tid);
+  }
+});
+
+function start(){
+  if(time>=circle_max_size) flag=true;
+  if(time<=0) flag=false;
+  if(!flag)
+  {
+    time+=1;
+    if(myscore>=level1)
     {
-      time+=1;
-      if(myscore>=level1)
-      {
-        var randian_start=item._oDrawing._htInfo.startAngle+1;
-        var randian_end=item._oDrawing._htInfo.endAngle+1;
-        item.set({
-          radius : time,
-          startAngle : randian_start,
-          endAngle : randian_end,
-          x : 250-time,
-          y : 250-time
-        });
-      }
-      else {
-        item.set({
-          radius : time,
-          x : 250-time,
-          y : 250-time
-        });
-      }
+      var randian_start=item._oDrawing._htInfo.startAngle+1;
+      var randian_end=item._oDrawing._htInfo.endAngle+1;
+      item.set({
+        radius : time,
+        startAngle : randian_start,
+        endAngle : randian_end,
+        x : gamewidth/2-time,
+        y : gameheight/2-time
+      });
     }
     else {
-      time-=1;
-      if(myscore>=level1)
-      {
-        var randian_start=item._oDrawing._htInfo.startAngle+1;
-        var randian_end=item._oDrawing._htInfo.endAngle+1;
-        item.set({
-          radius : time,
-          startAngle : randian_start,
-          endAngle : randian_end,
-          x : 250-time,
-          y : 250-time
-        });
-      }
-      else {
-        item.set({
-          radius : time,
-          x : 250-time,
-          y : 250-time
-        });
-      }
+      item.set({
+        radius : time,
+        x : gamewidth/2-time,
+        y : gameheight/2-time
+      });
     }
-
+  }
+  else {
+    time-=1;
+    if(myscore>=level1)
+    {
+      var randian_start=item._oDrawing._htInfo.startAngle+1;
+      var randian_end=item._oDrawing._htInfo.endAngle+1;
+      item.set({
+        radius : time,
+        startAngle : randian_start,
+        endAngle : randian_end,
+        x : gamewidth/2-time,
+        y : gameheight/2-time
+      });
+    }
+    else {
+      item.set({
+        radius : time,
+        x : gamewidth/2-time,
+        y : gameheight/2-time
+      });
+    }
   }
 }
 
 function next(){
+  if(time!=0)
+  {
+    time=0;
+    clearInterval(tid);
+  }
   if(myscore>=level1)
   {
     time=0;
@@ -92,16 +127,16 @@ function next(){
       strokeWidth : Math.random()*10,
       startAngle : target_start,
       endAngle : target_end,
-      x : 250-temp,
-      y : 250-temp
+      x : gamewidth/2-temp,
+      y : gameheight/2-temp
     });
     item.set({
       radius : 0,
       strokeWidth : 1,
       startAngle : item_start,
       endAngle : item_end,
-      x : 250,
-      y : 250
+      x : gamewidth/2,
+      y : gameheight/2
     });
   }
   else {
@@ -117,59 +152,58 @@ function next(){
       strokeWidth : Math.random()*10,
       startAngle : 0,
       endAngle : 360,
-      x : 250-temp,
-      y : 250-temp
+      x : gamewidth/2-temp,
+      y : gameheight/2-temp
     });
     item.set({
       radius : 0,
       strokeWidth : 1,
       startAngle : 0,
       endAngle : 360,
-      x : 250,
-      y : 250
+      x : gamewidth/2,
+      y : gameheight/2
     })
   }
 
 }
 
-function score(e){
-  keynum=window.event? e.keyCode:e.which;
-  if(keynum==32)
+function score(){
+  if((Math.abs(item._oDrawing._htInfo.radius-target_circle._oDrawing._htInfo.radius)<=target_circle._oDrawing._htInfo.strokeWidth)&&((item._oDrawing._htInfo.startAngle%361)>=target_circle._oDrawing._htInfo.startAngle)&&((item._oDrawing._htInfo.endAngle%361)<=target_circle._oDrawing._htInfo.endAngle))
   {
-    if((Math.abs(item._oDrawing._htInfo.radius-target_circle._oDrawing._htInfo.radius)<=target_circle._oDrawing._htInfo.strokeWidth)&&((item._oDrawing._htInfo.startAngle%361)>=target_circle._oDrawing._htInfo.startAngle)&&((item._oDrawing._htInfo.endAngle%361)<=target_circle._oDrawing._htInfo.endAngle))
-    {
-      myscore+=1;
-      document.getElementById("score").value=myscore;
-      next();
-    }
-    else
-    {
-      if(max_score<myscore) max_score=myscore
-      document.getElementById("score").value="LOSE! MaxScore="+max_score;
-      myscore=0;
-      next();
-    }
-
+    myscore+=1;
+    document.getElementById("score").value=myscore;
+    next();
+  }
+  else
+  {
+    if(max_score<myscore) max_score=myscore
+    document.getElementById("score").value="LOSE! MaxScore="+max_score;
+    myscore=0;
+    next();
   }
 }
 
 var layer = new collie.Layer({
-    width : 500,
-    height : 500
+    width : gamewidth,
+    height : gameheight
 });
 
 var target_circle = new collie.Circle({
   radius : 100,
   strokeWidth : 10,
-  x : 150,
-  y : 150
+  startAngle : 0,
+  endAngle : 360,
+  x : gamewidth/2-100,
+  y : gameheight/2-100
 }).addTo(layer);
 
 var item = new collie.Circle({
     radius : 0,
     strokeWidth : 1,
-    x : 250,
-    y : 250
+    startAngle : 0,
+    endAngle : 360,
+    x : gamewidth/2,
+    y : gameheight/2
 }).addTo(layer);
 collie.Renderer.addLayer(layer);
 collie.Renderer.load(document.getElementById("circlefit"));

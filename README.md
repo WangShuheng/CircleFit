@@ -6,7 +6,13 @@
 
 This is a simple game base on Collie.js.
 
-You just need to press the space to make the pattern right in the black area.
+You just need to press the left mouse key to make the pattern right in the black area.
+
+
+
+## Update
+
+* Mobile adaption. Repainting in IOS has some problems.
 
 
 
