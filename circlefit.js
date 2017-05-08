@@ -11,6 +11,8 @@ const level1=5;
 const gameheight=Math.min(document.getElementById("circlefit").clientWidth,document.getElementById("circlefit").clientHeight);
 const gamewidth=document.getElementById("circlefit").clientWidth
 
+document.getElementById("score").value="Press the screen or left mouse button to make the circle fit the target!";
+
 /*---------------------- mobile -------------------------*/
 var tch=document.getElementById("circlefit");
 tch.addEventListener('touchstart',function(e){
@@ -171,14 +173,15 @@ function score(){
   if((Math.abs(item._oDrawing._htInfo.radius-target_circle._oDrawing._htInfo.radius)<=target_circle._oDrawing._htInfo.strokeWidth)&&((item._oDrawing._htInfo.startAngle%361)>=target_circle._oDrawing._htInfo.startAngle)&&((item._oDrawing._htInfo.endAngle%361)<=target_circle._oDrawing._htInfo.endAngle))
   {
     myscore+=1;
-    document.getElementById("score").value=myscore;
+    document.getElementById("score").value="Your score: "+myscore;
     next();
   }
   else
   {
     if(max_score<myscore) max_score=myscore
-    document.getElementById("score").value="LOSE! MaxScore="+max_score;
     myscore=0;
+    alert("You Lose! Max Score is "+max_score+" !")
+    document.getElementById("score").value="Press the screen or left mouse button to make the circle fit the target!";
     next();
   }
 }
